@@ -2,15 +2,25 @@ networks:
   dev-network:
     driver: bridge
 services:
+  mongo:
+    container_name: mongo-db
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - "6002:27017"
+    networks:
+      - dev-network
+    restart: unless-stopped
   weather-forecast:
     build: .
     image: weather-forecast:local
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
+      MongoDbOptions__ConnectionString: "mongodb://admin:admin@mongo:27017/"
     ports:
       - "5080:5080"
     networks:
       - dev-network
-    extra_hosts:
-      - host.docker.internal:host-gateway
     restart: unless-stopped

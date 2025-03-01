@@ -1,29 +1,31 @@
 ﻿namespace WeatherForecast.Infrastructure.MongoDb.Services;
 
+using MongoDB.Driver;
 using WeatherForecast.Application.Coordinates.Interfaces;
 using WeatherForecast.Application.Coordinates.Models;
+using WeatherForecast.Infrastructure.MongoDb.Constants;
+using WeatherForecast.Infrastructure.MongoDb.Interfaces;
 using WeatherForecast.Infrastructure.MongoDb.Mappers.Interfaces;
+using WeatherForecast.Infrastructure.MongoDb.Models;
 
 internal sealed class CoordinatesRepository : ICoordinatesRepository
 {
+    private readonly IMongoCollection<CoordinatesDbModel> collection;
     private readonly ICoordinatesDbMapper mapper;
 
-    public CoordinatesRepository(ICoordinatesDbMapper mapper)
-        => this.mapper = mapper;
+    public CoordinatesRepository(IMongoCollectionFactory collectionFactory, ICoordinatesDbMapper mapper)
+    {
+        this.collection = collectionFactory.GetCollection<CoordinatesDbModel>(DatabaseCollections.COORDINATES_COLLECTION_NAME);
+        this.mapper = mapper;
+    }
 
     public async Task AddCoordinatesAsync(CoordinatesEntity entity, CancellationToken cancellationToken)
     {
         var dbModel = this.mapper.ToDbModel(entity);
 
-        MongoDb.Coordinates.Add(entity.Id, dbModel);
-
-        await Task.CompletedTask;
+        await this.collection.InsertOneAsync(dbModel, new InsertOneOptions(), cancellationToken);
     }
 
     public async Task DeleteCoordinatesAsync(Guid id, CancellationToken cancellationToken)
-    {
-        MongoDb.Coordinates.Remove(id);
-
-        await Task.CompletedTask;
-    }
+        => await this.collection.DeleteOneAsync(coordinates => coordinates.Id == id, cancellationToken);
 }

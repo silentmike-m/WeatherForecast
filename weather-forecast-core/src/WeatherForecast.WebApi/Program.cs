@@ -34,7 +34,7 @@ builder.Services
 
 builder.Services
     .AddApplication()
-    .AddInfrastructure();
+    .AddInfrastructure(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 
