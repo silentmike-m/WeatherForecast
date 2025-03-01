@@ -26,16 +26,16 @@ public sealed class DeleteCoordinatesValidatorTests
     [TestMethod]
     public async Task Should_Fail_When_CoordinatesNotExists()
     {
-        //ARRANGE
+        // Arrange
         var request = new DeleteCoordinates
         {
             Id = Guid.NewGuid(),
         };
 
-        //ACT
+        // Act
         var result = await this.validator.ValidateAsync(request);
 
-        //ASSERT
+        // Arrange
         result.IsValid.Should()
             .BeFalse();
 
@@ -52,16 +52,16 @@ public sealed class DeleteCoordinatesValidatorTests
     [TestMethod]
     public async Task Should_PassValidation()
     {
-        //ARRANGE
+        // Arrange
         var request = new DeleteCoordinates
         {
             Id = EXISTING_COORDINATES_ID,
         };
 
-        //ACT
+        // Act
         var result = await this.validator.ValidateAsync(request);
 
-        //ASSERT
+        // Arrange
         result.IsValid.Should()
             .BeTrue();
     }

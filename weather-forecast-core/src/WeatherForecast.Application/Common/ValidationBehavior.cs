@@ -1,6 +1,5 @@
 ﻿namespace WeatherForecast.Application.Common;
 
-using FluentValidation;
 using FluentValidation.Results;
 
 internal sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
@@ -36,7 +35,7 @@ internal sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavio
 
         if (failures.Count > 0)
         {
-            throw new FluentValidation.ValidationException(failures);
+            throw new ValidationException(failures);
         }
     }
 }

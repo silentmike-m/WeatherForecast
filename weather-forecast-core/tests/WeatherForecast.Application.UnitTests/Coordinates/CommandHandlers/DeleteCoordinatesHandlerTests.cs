@@ -18,7 +18,7 @@ public sealed class DeleteCoordinatesHandlerTests
     [TestMethod]
     public async Task Handle_ShouldDeleteCoordinates()
     {
-        //ARRANGE
+        // Arrange
         var cancellationToken = CancellationToken.None;
 
         var request = new DeleteCoordinates
@@ -26,10 +26,10 @@ public sealed class DeleteCoordinatesHandlerTests
             Id = Guid.NewGuid(),
         };
 
-        //ACT
+        // Act
         await this.handler.Handle(request, cancellationToken);
 
-        //ASSERT
+        // Arrange
         this.repositoryMock.Verify(x => x.DeleteCoordinatesAsync(request.Id, cancellationToken), Times.Once);
     }
 }

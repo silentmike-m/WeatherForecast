@@ -25,7 +25,7 @@ public sealed class MediatRUnitTests
     [TestMethod]
     public void Should_ContainHandler_For_AllNotifications()
     {
-        //ARRANGE
+        // Arrange
         var types = ASSEMBLIES
             .SelectMany(name => Assembly.Load(name).GetTypes())
             .ToList();
@@ -34,12 +34,12 @@ public sealed class MediatRUnitTests
             .Where(type => NOTIFICATION_TYPE.IsAssignableFrom(type))
             .ToList();
 
-        //ACT
+        // Act
         var handlerTypes = types
             .Where(type => type.GetInterfaces().Any(interfaceType => interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == NOTIFICATION_HANDLER_TYPE))
             .ToList();
 
-        //ASSERT
+        // Arrange
         var errors = new List<string>();
 
         foreach (var notificationType in notificationTypes)
@@ -63,7 +63,7 @@ public sealed class MediatRUnitTests
     [TestMethod]
     public void Should_ContainSingleHandler_For_AlRequestsAndQueries()
     {
-        //ARRANGE
+        // Arrange
         var types = ASSEMBLIES
             .SelectMany(name => Assembly.Load(name).GetTypes())
             .ToList();
@@ -80,7 +80,7 @@ public sealed class MediatRUnitTests
             }
         }
 
-        //ACT
+        // Act
         var handlerTypes = new List<Type>();
 
         foreach (var type in types)
@@ -95,7 +95,7 @@ public sealed class MediatRUnitTests
             }
         }
 
-        //ASSERT
+        // Arrange
         foreach (var requestType in requestTypes)
         {
             handlerTypes.Should().ContainSingle(type =>

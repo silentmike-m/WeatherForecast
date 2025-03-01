@@ -24,17 +24,17 @@ public sealed class AddCoordinatesValidatorTests
     [TestMethod]
     public async Task Should_Fail_When_Latitude_HasInvalidDigits()
     {
-        //ARRANGE
+        // Arrange
         var request = new AddCoordinates
         {
             Latitude = 50.555m,
             Longitude = 45.57m,
         };
 
-        //ACT
+        // Act
         var result = await this.validator.ValidateAsync(request);
 
-        //ASSERT
+        // Arrange
         result.IsValid.Should()
             .BeFalse();
 
@@ -50,17 +50,17 @@ public sealed class AddCoordinatesValidatorTests
     [DataTestMethod, DataRow(-91), DataRow(91)]
     public async Task Should_Fail_When_Latitude_IsInvalid(int latitude)
     {
-        //ARRANGE
+        // Arrange
         var request = new AddCoordinates
         {
             Latitude = latitude,
             Longitude = 45.5m,
         };
 
-        //ACT
+        // Act
         var result = await this.validator.ValidateAsync(request);
 
-        //ASSERT
+        // Arrange
         result.IsValid.Should()
             .BeFalse();
 
@@ -75,7 +75,7 @@ public sealed class AddCoordinatesValidatorTests
     [TestMethod]
     public async Task Should_Fail_When_LatitudeAndLongitude_AreNotUnique()
     {
-        //ARRANGE
+        // Arrange
         var request = new AddCoordinates
         {
             Latitude = 50.55m,
@@ -86,10 +86,10 @@ public sealed class AddCoordinatesValidatorTests
             .Setup(service => service.IsLatitudeAndLongitudeUniqueAsync(request.Latitude, request.Longitude, CancellationToken.None))
             .ReturnsAsync(false);
 
-        //ACT
+        // Act
         var result = await this.validator.ValidateAsync(request);
 
-        //ASSERT
+        // Arrange
         result.IsValid.Should()
             .BeFalse();
 
@@ -104,17 +104,17 @@ public sealed class AddCoordinatesValidatorTests
     [TestMethod]
     public async Task Should_Fail_When_Longitude_HasInvalidDigits()
     {
-        //ARRANGE
+        // Arrange
         var request = new AddCoordinates
         {
             Latitude = 50.55m,
             Longitude = 45.567m,
         };
 
-        //ACT
+        // Act
         var result = await this.validator.ValidateAsync(request);
 
-        //ASSERT
+        // Arrange
         result.IsValid.Should()
             .BeFalse();
 
@@ -130,17 +130,17 @@ public sealed class AddCoordinatesValidatorTests
     [DataTestMethod, DataRow(-181), DataRow(181)]
     public async Task Should_Fail_When_Longitude_IsInvalid(int longitude)
     {
-        //ARRANGE
+        // Arrange
         var request = new AddCoordinates
         {
             Latitude = 50.55m,
             Longitude = longitude,
         };
 
-        //ACT
+        // Act
         var result = await this.validator.ValidateAsync(request);
 
-        //ASSERT
+        // Arrange
         result.IsValid.Should()
             .BeFalse();
 
@@ -155,17 +155,17 @@ public sealed class AddCoordinatesValidatorTests
     [TestMethod]
     public async Task Should_PassValidation()
     {
-        //ARRANGE
+        // Arrange
         var request = new AddCoordinates
         {
             Latitude = 50.55m,
             Longitude = 23.35m,
         };
 
-        //ACT
+        // Act
         var result = await this.validator.ValidateAsync(request);
 
-        //ASSERT
+        // Arrange
         result.IsValid.Should()
             .BeTrue();
     }

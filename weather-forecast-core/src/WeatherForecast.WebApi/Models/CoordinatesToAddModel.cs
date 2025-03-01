@@ -2,7 +2,7 @@
 
 using System.Text.Json.Serialization;
 
-public sealed record CoordinatesToAdd
+public sealed record CoordinatesToAddModel
 {
     [JsonPropertyName("Latitude")]
     public decimal Latitude { get; init; }

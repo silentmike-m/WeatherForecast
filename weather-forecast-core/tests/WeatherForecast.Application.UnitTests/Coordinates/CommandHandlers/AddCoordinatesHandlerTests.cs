@@ -30,7 +30,7 @@ public sealed class AddCoordinatesHandlerTests
     [TestMethod]
     public async Task Handle_ShouldAddCoordinates()
     {
-        //ARRANGE
+        // Arrange
         CoordinatesEntity? addedCoordinates = null;
 
         var cancellationToken = CancellationToken.None;
@@ -45,10 +45,10 @@ public sealed class AddCoordinatesHandlerTests
             .Setup(service => service.AddCoordinatesAsync(It.IsAny<CoordinatesEntity>(), cancellationToken))
             .Callback<CoordinatesEntity, CancellationToken>((entity, _) => addedCoordinates = entity);
 
-        //ACT
+        // Act
         await this.handler.Handle(request, cancellationToken);
 
-        //ASSERT
+        // Arrange
         this.repositoryMock.Verify(service => service.AddCoordinatesAsync(It.IsAny<CoordinatesEntity>(), cancellationToken), Times.Once);
 
         var expectedCoordinates = new CoordinatesEntity(ID, request.Latitude, request.Longitude);

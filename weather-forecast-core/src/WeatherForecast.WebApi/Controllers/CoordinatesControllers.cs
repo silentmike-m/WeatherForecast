@@ -2,13 +2,14 @@
 
 using Microsoft.AspNetCore.Mvc;
 using WeatherForecast.Application.Coordinates.Commands;
+using WeatherForecast.Application.Coordinates.Queries;
 using WeatherForecast.WebApi.Models;
 
 [ApiController, Route("Coordinates")]
 public sealed class CoordinatesControllers : ApiController
 {
     [HttpPost, Route("AddCoordinates")]
-    public async Task<IActionResult> AddProduct([FromBody] CoordinatesToAdd coordinates, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddProduct([FromBody] CoordinatesToAddModel coordinates, CancellationToken cancellationToken)
     {
         var request = new AddCoordinates
         {
@@ -19,6 +20,22 @@ public sealed class CoordinatesControllers : ApiController
         await this.Mediator.Send(request, cancellationToken);
 
         return this.Ok();
+    }
+
+    [HttpGet, Route("GetCoordinates")]
+    public async Task<IReadOnlyList<CoordinatesGetModel>> GetCoordinates(CancellationToken cancellationToken)
+    {
+        var coordinates = await this.Mediator.Send(new GetCoordinates(), cancellationToken);
+
+        var result = coordinates
+            .Select(dto => new CoordinatesGetModel
+            {
+                Id = dto.Id,
+                Latitude = dto.Latitude,
+                Longitude = dto.Longitude,
+            }).ToList();
+
+        return result;
     }
 
     [HttpDelete, Route("DeleteCoordinates")]
