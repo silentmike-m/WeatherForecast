@@ -1,0 +1,16 @@
+networks:
+  dev-network:
+    driver: bridge
+services:
+  weather-forecast:
+    build: .
+    image: weather-forecast:local
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+    ports:
+      - "5080:5080"
+    networks:
+      - dev-network
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
