@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WeatherForecast.Infrastructure.Coordinates;
 using WeatherForecast.Infrastructure.MongoDb;
+using WeatherForecast.Infrastructure.OpenMeteo;
+using WeatherForecast.Infrastructure.WeatherForecasts;
 
 public static class DependencyInjection
 {
@@ -16,6 +18,10 @@ public static class DependencyInjection
         services.AddCoordinates();
 
         services.AddMongoDb(configuration);
+
+        services.AddOpenMeteo(configuration);
+
+        services.AddWeatherForecast();
 
         return services;
     }
