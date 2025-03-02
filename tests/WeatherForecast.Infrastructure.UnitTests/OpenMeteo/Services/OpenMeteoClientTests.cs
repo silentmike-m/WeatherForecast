@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using Moq.Protected;
 using WeatherForecast.Infrastructure.OpenMeteo;
+using WeatherForecast.Infrastructure.OpenMeteo.Exceptions;
 using WeatherForecast.Infrastructure.OpenMeteo.Models;
 using WeatherForecast.Infrastructure.OpenMeteo.Services;
 
@@ -51,7 +52,7 @@ public sealed class OpenMeteoClientTests
         await this.client.GetWeatherForecastAsync(latitude, longitude, CancellationToken.None);
 
         // Assert
-        var expectedUri = new Uri($"{httpClient.BaseAddress}forecast?latitude={latitude}&longitude={longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,rain_sum,showers_sum,snowfall_sum&forecast_days={this.options.ForecastDays}");
+        var expectedUri = new Uri($"{httpClient.BaseAddress}v1/forecast?latitude={latitude}&longitude={longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,rain_sum,showers_sum,snowfall_sum&forecast_days={this.options.ForecastDays}");
 
         executedUri.Should()
             .BeEquivalentTo(expectedUri);
@@ -120,7 +121,7 @@ public sealed class OpenMeteoClientTests
     }
 
     [TestMethod]
-    public async Task GetWeatherForecastAsync_Should_ThrowsException_OnApiError()
+    public async Task GetWeatherForecastAsync_Should_ThrowOpenMeteoConnectionException_OnApiError()
     {
         // Arrange
         using var httpClient = new HttpClient(this.handlerMock.Object)
@@ -142,7 +143,7 @@ public sealed class OpenMeteoClientTests
 
         // Assert
         await action.Should()
-            .ThrowAsync<HttpRequestException>();
+            .ThrowAsync<OpenMeteoConnectionException>();
     }
 
     [TestInitialize]

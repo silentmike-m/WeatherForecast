@@ -4,6 +4,7 @@ using MongoDB.Driver;
 using WeatherForecast.Application.Coordinates.Interfaces;
 using WeatherForecast.Application.Coordinates.Models;
 using WeatherForecast.Infrastructure.MongoDb.Constants;
+using WeatherForecast.Infrastructure.MongoDb.Exceptions;
 using WeatherForecast.Infrastructure.MongoDb.Interfaces;
 using WeatherForecast.Infrastructure.MongoDb.Mappers.Interfaces;
 using WeatherForecast.Infrastructure.MongoDb.Models;
@@ -21,24 +22,47 @@ internal sealed class CoordinatesRepository : ICoordinatesRepository
 
     public async Task AddCoordinatesAsync(CoordinatesEntity entity, CancellationToken cancellationToken)
     {
-        var dbModel = this.mapper.ToDbModel(entity);
+        try
+        {
+            var dbModel = this.mapper.ToDbModel(entity);
 
-        await this.collection.InsertOneAsync(dbModel, new InsertOneOptions(), cancellationToken);
+            await this.collection.InsertOneAsync(dbModel, new InsertOneOptions(), cancellationToken);
+        }
+        catch (Exception exception)
+        {
+            throw new MongoDbConnectionException(exception);
+        }
     }
 
     public async Task DeleteCoordinatesAsync(CoordinatesEntity entity, CancellationToken cancellationToken)
-        => await this.collection.DeleteOneAsync(coordinates => coordinates.Id == entity.Id, cancellationToken);
+    {
+        try
+        {
+            await this.collection.DeleteOneAsync(coordinates => coordinates.Id == entity.Id, cancellationToken);
+        }
+        catch (Exception exception)
+        {
+            throw new MongoDbConnectionException(exception);
+        }
+    }
 
     public async Task<CoordinatesEntity?> GetCoordinatesAsync(Guid id, CancellationToken cancellationToken)
     {
-        var filter = Builders<CoordinatesDbModel>.Filter.Eq(coordinates => coordinates.Id, id);
+        try
+        {
+            var filter = Builders<CoordinatesDbModel>.Filter.Eq(coordinates => coordinates.Id, id);
 
-        var dbModel = await this.collection.Find(filter).SingleOrDefaultAsync(cancellationToken);
+            var dbModel = await this.collection.Find(filter).SingleOrDefaultAsync(cancellationToken);
 
-        var result = dbModel is null
-            ? null
-            : new CoordinatesEntity(dbModel.Id, dbModel.Longitude, dbModel.Latitude);
+            var result = dbModel is null
+                ? null
+                : new CoordinatesEntity(dbModel.Id, dbModel.Longitude, dbModel.Latitude);
 
-        return result;
+            return result;
+        }
+        catch (Exception exception)
+        {
+            throw new MongoDbConnectionException(exception);
+        }
     }
 }

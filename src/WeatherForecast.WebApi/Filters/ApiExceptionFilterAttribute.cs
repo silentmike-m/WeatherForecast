@@ -24,6 +24,10 @@ internal sealed class ApiExceptionFilterAttribute : ExceptionFilterAttribute
                 HandleValidationException(context, validationException);
 
                 break;
+            case ApplicationException applicationException:
+                HandleApplicationException(context, applicationException);
+
+                break;
             default:
                 HandleUnknownException(context);
 
@@ -31,6 +35,27 @@ internal sealed class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         }
 
         base.OnException(context);
+    }
+
+    private static void HandleApplicationException(ExceptionContext context, ApplicationException exception)
+    {
+        var response = new
+        {
+            exception.Code,
+            Error = exception.Message,
+            Response = exception.Message,
+        };
+
+        context.Result = new ObjectResult(response)
+        {
+            ContentTypes =
+            [
+                MediaTypeNames.Application.Json,
+            ],
+            StatusCode = StatusCodes.Status400BadRequest,
+        };
+
+        context.ExceptionHandled = true;
     }
 
     private static void HandleUnknownException(ExceptionContext context)

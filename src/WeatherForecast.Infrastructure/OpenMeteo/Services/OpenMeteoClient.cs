@@ -1,6 +1,7 @@
 namespace WeatherForecast.Infrastructure.OpenMeteo.Services;
 
 using System.Net.Http.Json;
+using WeatherForecast.Infrastructure.OpenMeteo.Exceptions;
 using WeatherForecast.Infrastructure.OpenMeteo.Interfaces;
 using WeatherForecast.Infrastructure.OpenMeteo.Models;
 
@@ -23,9 +24,16 @@ internal sealed class OpenMeteoClient : IOpenMeteoClient
 
         using var httpClient = this.httpClientFactory.CreateClient(OpenMeteoOptions.HTTP_CLIENT_NAME);
 
-        //TODO: response validation
-        var response = await httpClient.GetFromJsonAsync<GetWeatherForecastResponse>(endpoint, cancellationToken);
+        try
+        {
+            //TODO: response validation
+            var response = await httpClient.GetFromJsonAsync<GetWeatherForecastResponse>(endpoint, cancellationToken);
 
-        return response;
+            return response;
+        }
+        catch (Exception exception)
+        {
+            throw new OpenMeteoConnectionException(exception);
+        }
     }
 }
