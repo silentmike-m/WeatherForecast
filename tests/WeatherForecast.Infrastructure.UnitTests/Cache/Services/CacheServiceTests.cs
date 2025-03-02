@@ -72,7 +72,7 @@ public sealed class CacheServiceTests
             Longitude = 56.78m,
         };
 
-        var readModel = new WeatherForecastsReadModel
+        var readModel = new WeatherForecastReadModel
         {
             Days = [],
             Latitude = 12.34m,

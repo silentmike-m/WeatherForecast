@@ -85,7 +85,7 @@ public sealed class GetWeatherForecastResponseExtensionsTests
         var result = response.ToReadModel();
 
         // Assert
-        var expectedResult = new WeatherForecastsReadModel
+        var expectedResult = new WeatherForecastReadModel
         {
             Days =
             [

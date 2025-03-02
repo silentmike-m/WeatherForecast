@@ -5,7 +5,7 @@ using WeatherForecast.Infrastructure.WeatherForecasts.Models;
 
 internal static class GetWeatherForecastResponseExtensions
 {
-    public static WeatherForecastsReadModel? ToReadModel(this GetWeatherForecastResponse? response)
+    public static WeatherForecastReadModel? ToReadModel(this GetWeatherForecastResponse? response)
     {
         if (response is null)
         {
@@ -36,7 +36,7 @@ internal static class GetWeatherForecastResponseExtensions
             days.Add(day);
         }
 
-        var result = new WeatherForecastsReadModel
+        var result = new WeatherForecastReadModel
         {
             Days = days,
             Latitude = response.Latitude,

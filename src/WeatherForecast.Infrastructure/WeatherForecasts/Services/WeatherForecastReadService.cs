@@ -12,7 +12,7 @@ internal sealed class WeatherForecastReadService : IWeatherForecastReadService
     public WeatherForecastReadService(IOpenMeteoClient openMeteoClient)
         => this.openMeteoClient = openMeteoClient;
 
-    public async Task<WeatherForecastsReadModel?> GetWeatherForecastsAsync(decimal latitude, decimal longitude, CancellationToken cancellationToken)
+    public async Task<WeatherForecastReadModel?> GetWeatherForecastsAsync(decimal latitude, decimal longitude, CancellationToken cancellationToken)
     {
         var response = await this.openMeteoClient.GetWeatherForecastAsync(latitude, longitude, cancellationToken);
 

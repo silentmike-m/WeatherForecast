@@ -7,7 +7,7 @@ public sealed record CoordinatesGetModel
     [JsonPropertyName("id")]
     public required Guid Id { get; init; }
 
-    [JsonPropertyName("Latitude")]
+    [JsonPropertyName("latitude")]
     public required decimal Latitude { get; init; }
 
     [JsonPropertyName("longitude")]

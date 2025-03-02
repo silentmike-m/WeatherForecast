@@ -26,6 +26,19 @@ internal sealed class CoordinatesRepository : ICoordinatesRepository
         await this.collection.InsertOneAsync(dbModel, new InsertOneOptions(), cancellationToken);
     }
 
-    public async Task DeleteCoordinatesAsync(Guid id, CancellationToken cancellationToken)
-        => await this.collection.DeleteOneAsync(coordinates => coordinates.Id == id, cancellationToken);
+    public async Task DeleteCoordinatesAsync(CoordinatesEntity entity, CancellationToken cancellationToken)
+        => await this.collection.DeleteOneAsync(coordinates => coordinates.Id == entity.Id, cancellationToken);
+
+    public async Task<CoordinatesEntity?> GetCoordinatesAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var filter = Builders<CoordinatesDbModel>.Filter.Eq(coordinates => coordinates.Id, id);
+
+        var dbModel = await this.collection.Find(filter).SingleOrDefaultAsync(cancellationToken);
+
+        var result = dbModel is null
+            ? null
+            : new CoordinatesEntity(dbModel.Id, dbModel.Longitude, dbModel.Latitude);
+
+        return result;
+    }
 }

@@ -58,7 +58,7 @@ public sealed class WeatherForecastReadServiceTests
         var result = await this.readService.GetWeatherForecastsAsync(latitude, longitude, cancellationToken);
 
         // Assert
-        var expectedResult = new WeatherForecastsReadModel
+        var expectedResult = new WeatherForecastReadModel
         {
             Days = [],
             Latitude = latitude,

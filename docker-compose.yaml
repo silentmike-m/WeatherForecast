@@ -13,12 +13,24 @@ services:
     networks:
       - dev-network
     restart: unless-stopped
+  redis:
+    container_name: redis
+    image: redis:latest
+    command: redis-server --requirepass P@ssw0rd
+    ports:
+      - "6379:6379"
+    networks:
+      - dev-network
+    restart: unless-stopped    
   weather-forecast:
     build: .
     image: weather-forecast:local
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       MongoDbOptions__ConnectionString: "mongodb://admin:admin@mongo:27017/"
+      RedisOptions__Server: "redis:6379"
+      RedisOptions__Password: "P@ssw0rd"
+      RedisOptions__InstanceName: "Develop"
     ports:
       - "5080:5080"
     networks:

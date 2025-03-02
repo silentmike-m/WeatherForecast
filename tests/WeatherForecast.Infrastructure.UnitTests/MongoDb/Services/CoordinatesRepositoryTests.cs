@@ -55,10 +55,10 @@ public sealed class CoordinatesRepositoryTests
         // Arrange
         var cancellationToken = CancellationToken.None;
 
-        var id = Guid.NewGuid();
+        var entity = new CoordinatesEntity(Guid.NewGuid(), latitude: 12.34m, longitude: 56.78m);
 
         // Act
-        await this.repository.DeleteCoordinatesAsync(id, cancellationToken);
+        await this.repository.DeleteCoordinatesAsync(entity, cancellationToken);
 
         // Assert
         this.collectionMock.Verify(collection => collection.DeleteOneAsync(It.IsAny<FilterDefinition<CoordinatesDbModel>>(), cancellationToken), Times.Once);

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 public sealed record CoordinatesToAddModel
 {
-    [JsonPropertyName("Latitude")]
+    [JsonPropertyName("latitude")]
     public decimal Latitude { get; init; }
 
     [JsonPropertyName("longitude")]

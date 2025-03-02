@@ -32,7 +32,7 @@ public sealed class WeatherForecastReadServiceCacheDecoratorTests
             Longitude = longitude,
         };
 
-        var readModel = new WeatherForecastsReadModel
+        var readModel = new WeatherForecastReadModel
         {
             Days = [],
             Latitude = latitude,
@@ -42,7 +42,7 @@ public sealed class WeatherForecastReadServiceCacheDecoratorTests
 
         this.cacheServiceMock
             .Setup(service => service.GetAsync(It.Is<WeatherForecastsKey>(k => k.Equals(key)), cancellationToken))
-            .ReturnsAsync((WeatherForecastsReadModel?)null);
+            .ReturnsAsync((WeatherForecastReadModel?)null);
 
         this.readServiceMock
             .Setup(service => service.GetWeatherForecastsAsync(latitude, longitude, cancellationToken))
@@ -74,7 +74,7 @@ public sealed class WeatherForecastReadServiceCacheDecoratorTests
             Longitude = longitude,
         };
 
-        var readModel = new WeatherForecastsReadModel
+        var readModel = new WeatherForecastReadModel
         {
             Days = [],
             Latitude = latitude,

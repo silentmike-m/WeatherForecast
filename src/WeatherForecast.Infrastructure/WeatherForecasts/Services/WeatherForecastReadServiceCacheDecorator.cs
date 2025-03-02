@@ -20,7 +20,7 @@ internal sealed class WeatherForecastReadServiceCacheDecorator : IWeatherForecas
         this.readService = readService;
     }
 
-    public async Task<WeatherForecastsReadModel?> GetWeatherForecastsAsync(decimal latitude, decimal longitude, CancellationToken cancellationToken)
+    public async Task<WeatherForecastReadModel?> GetWeatherForecastsAsync(decimal latitude, decimal longitude, CancellationToken cancellationToken)
     {
         var cacheKey = new WeatherForecastsKey
         {

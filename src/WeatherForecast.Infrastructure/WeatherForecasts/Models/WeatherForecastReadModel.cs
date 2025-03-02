@@ -1,6 +1,6 @@
 namespace WeatherForecast.Infrastructure.WeatherForecasts.Models;
 
-internal sealed record WeatherForecastsReadModel
+internal sealed record WeatherForecastReadModel
 {
     public required IReadOnlyList<DailyWeatherForecastReadModel> Days { get; init; } = [];
     public required decimal Latitude { get; init; }

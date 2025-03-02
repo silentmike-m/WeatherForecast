@@ -3,6 +3,8 @@ namespace WeatherForecast.Infrastructure.Cache;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WeatherForecast.Infrastructure.Cache.Interfaces;
+using WeatherForecast.Infrastructure.Cache.Services;
 
 [ExcludeFromCodeCoverage]
 internal static class DependencyInjection
@@ -19,6 +21,8 @@ internal static class DependencyInjection
             options.Configuration = $"{redisOptions.Server},password={redisOptions.Password}";
             options.InstanceName = redisOptions.InstanceName;
         });
+
+        services.AddScoped<ICacheService, CacheService>();
 
         return services;
     }
