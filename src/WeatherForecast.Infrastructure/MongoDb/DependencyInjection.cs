@@ -20,14 +20,7 @@ internal static class DependencyInjection
     {
         services.Configure<MongoDbOptions>(configuration.GetSection(nameof(MongoDbOptions)));
 
-        services.AddSingleton<IMongoClient>(
-            sp =>
-            {
-                var options = sp.GetRequiredService<IOptions<MongoDbOptions>>().Value;
-
-                return CreateMongoClient(options.ConnectionString);
-            }
-        );
+        services.AddSingleton(CreateMongoClient);
 
         services.AddScoped<IMongoCollectionFactory, MongoCollectionFactory>();
 
@@ -37,6 +30,13 @@ internal static class DependencyInjection
         services.AddSingleton<ICoordinatesDbMapper, CoordinatesDbMapper>();
 
         return services;
+    }
+
+    public static IMongoClient CreateMongoClient(IServiceProvider serviceProvider)
+    {
+        var options = serviceProvider.GetRequiredService<IOptions<MongoDbOptions>>().Value;
+
+        return CreateMongoClient(options.ConnectionString);
     }
 
     private static MongoClient CreateMongoClient(string connectionString)

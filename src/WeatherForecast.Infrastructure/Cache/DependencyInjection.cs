@@ -16,9 +16,11 @@ internal static class DependencyInjection
 
         services.Configure<CacheOptions>(configuration.GetSection(nameof(CacheOptions)));
 
+        services.AddSingleton(redisOptions);
+
         services.AddStackExchangeRedisCache(options =>
         {
-            options.Configuration = $"{redisOptions.Server},password={redisOptions.Password}";
+            options.Configuration = redisOptions.ConnectionString;
             options.InstanceName = redisOptions.InstanceName;
         });
 

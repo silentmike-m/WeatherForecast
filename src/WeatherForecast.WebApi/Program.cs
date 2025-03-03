@@ -20,8 +20,6 @@ builder.Host.UseSerilog((ctx, lc) => lc
     .Enrich.WithProperty(nameof(ServiceConstants.ServiceName), ServiceConstants.ServiceName)
     .Enrich.WithProperty(nameof(ServiceConstants.ServiceVersion), ServiceConstants.ServiceVersion));
 
-builder.Services.AddHealthChecks();
-
 builder.Services
     .AddProblemDetails(options =>
         options.CustomizeProblemDetails = ctx =>
